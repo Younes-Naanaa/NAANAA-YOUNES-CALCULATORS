@@ -1,0 +1,211 @@
+﻿<Window x:Class="NAANAA_YOUNES_CALCULATORS.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Calculatrice"
+        Width="390" Height="650"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="#080A0F">
+
+    <Window.Resources>
+
+        <!-- Ombre de la calculatrice -->
+        <DropShadowEffect x:Key="BodyShadow"
+                          Color="#000000" BlurRadius="35"
+                          ShadowDepth="10" Opacity="0.8"/>
+
+        <!-- Boutons chiffres -->
+        <Style x:Key="NumberButton" TargetType="Button">
+            <Setter Property="Foreground" Value="#E6E3FF"/>
+            <Setter Property="Background" Value="#101219"/>
+            <Setter Property="BorderBrush" Value="#272A35"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontWeight" Value="Light"/>
+            <Setter Property="Margin" Value="7"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <!-- Ombre du bouton -->
+                            <Border CornerRadius="50" Background="#050609" Margin="2,5,2,0"/>
+                            <!-- Bouton -->
+                            <Border x:Name="ButtonBorder"
+                                    CornerRadius="50"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <Grid>
+                                    <!-- Léger reflet -->
+                                    <Border CornerRadius="50" Margin="3"
+                                            BorderBrush="#181B24" BorderThickness="1"/>
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#171A23"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#222631"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Boutons opérations (néon) -->
+        <Style x:Key="OperatorButton" TargetType="Button"
+               BasedOn="{StaticResource NumberButton}">
+            <Setter Property="Foreground" Value="#B47CFF"/>
+            <Setter Property="BorderBrush" Value="#4F2B7A"/>
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#9B4DFF" BlurRadius="13"
+                                      ShadowDepth="0" Opacity="1"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Bouton = -->
+        <Style x:Key="EqualsButton" TargetType="Button"
+               BasedOn="{StaticResource NumberButton}">
+            <Setter Property="Foreground" Value="#C994FF"/>
+            <Setter Property="Background" Value="#11101A"/>
+            <Setter Property="BorderBrush" Value="#8D4CFF"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontSize" Value="36"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#8C42FF" BlurRadius="17"
+                                      ShadowDepth="0" Opacity="0.85"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Bouton C -->
+        <Style x:Key="ClearButton" TargetType="Button"
+               BasedOn="{StaticResource NumberButton}">
+            <Setter Property="Foreground" Value="#FF6B9D"/>
+            <Setter Property="BorderBrush" Value="#7A2B4F"/>
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#FF4D88" BlurRadius="13"
+                                      ShadowDepth="0" Opacity="1"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Border Margin="22" CornerRadius="35"
+                Background="#0B0D12"
+                BorderBrush="#242733" BorderThickness="1"
+                Effect="{StaticResource BodyShadow}">
+
+            <Grid Margin="18">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="150"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="85"/>
+                </Grid.RowDefinitions>
+
+                <!-- Écran -->
+                <Border Grid.Row="0" Margin="4,4,4,12"
+                        Background="#07080C"
+                        BorderBrush="#242631" BorderThickness="1"
+                        CornerRadius="25">
+                    <Grid Margin="22,15">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="CALCULATOR"
+                                   Foreground="#7C7F91"
+                                   FontSize="11" FontWeight="Light"
+                                   HorizontalAlignment="Left"/>
+
+                        <!-- Calcul précédent -->
+                        <TextBlock x:Name="OperationText" Grid.Row="1"
+                                   Text=""
+                                   Foreground="#81759B" FontSize="17"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Top"
+                                   Margin="0,3,3,0"/>
+
+                        <!-- Résultat -->
+                        <TextBlock x:Name="DisplayText" Grid.Row="1"
+                                   Text="0"
+                                   Foreground="#B986FF"
+                                   FontSize="58" FontWeight="Light"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom">
+                            <TextBlock.Effect>
+                                <DropShadowEffect Color="#914CFF" BlurRadius="16"
+                                                  ShadowDepth="0" Opacity="1"/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </Grid>
+                </Border>
+
+                <!-- Touches -->
+                <Grid Grid.Row="1" Margin="0,3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 7 8 9 ÷ -->
+                    <Button Grid.Row="0" Grid.Column="0" Content="7" Style="{StaticResource NumberButton}" Click="Button_Click"/>
+                    <Button Grid.Row="0" Grid.Column="1" Content="8" Style="{StaticResource NumberButton}" Click="Button_Click"/>
+                    <Button Grid.Row="0" Grid.Column="2" Content="9" Style="{StaticResource NumberButton}" Click="Button_Click"/>
+                    <Button Grid.Row="0" Grid.Column="3" Content="÷" Style="{StaticResource OperatorButton}" Click="Button_Click"/>
+
+                    <!-- 4 5 6 × -->
+                    <Button Grid.Row="1" Grid.Column="0" Content="4" Style="{StaticResource NumberButton}" Click="Button_Click"/>
+                    <Button Grid.Row="1" Grid.Column="1" Content="5" Style="{StaticResource NumberButton}" Click="Button_Click"/>
+                    <Button Grid.Row="1" Grid.Column="2" Content="6" Style="{StaticResource NumberButton}" Click="Button_Click"/>
+                    <Button Grid.Row="1" Grid.Column="3" Content="×" Style="{StaticResource OperatorButton}" Click="Button_Click"/>
+
+                    <!-- 1 2 3 − -->
+                    <Button Grid.Row="2" Grid.Column="0" Content="1" Style="{StaticResource NumberButton}" Click="Button_Click"/>
+                    <Button Grid.Row="2" Grid.Column="1" Content="2" Style="{StaticResource NumberButton}" Click="Button_Click"/>
+                    <Button Grid.Row="2" Grid.Column="2" Content="3" Style="{StaticResource NumberButton}" Click="Button_Click"/>
+                    <Button Grid.Row="2" Grid.Column="3" Content="−" Style="{StaticResource OperatorButton}" Click="Button_Click"/>
+
+                    <!-- 0 . + -->
+                    <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="0" Style="{StaticResource NumberButton}" Click="Button_Click"/>
+                    <Button Grid.Row="3" Grid.Column="2" Content="." Style="{StaticResource NumberButton}" Click="Button_Click"/>
+                    <Button Grid.Row="3" Grid.Column="3" Content="+" Style="{StaticResource OperatorButton}" Click="Button_Click"/>
+                </Grid>
+
+                <!-- C et Égal -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Content="C" Style="{StaticResource ClearButton}" Click="Button_Click"/>
+                    <Button Grid.Column="1" Content="=" Style="{StaticResource EqualsButton}" Click="Button_Click"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
